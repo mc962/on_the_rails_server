@@ -1,0 +1,104 @@
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+      - edited
+      - synchronize
+  push:
+    branches:
+      - main
+
+jobs:
+  linters:
+    name: Linters
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup Ruby and Gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.0
+          bundler-cache: true
+      - name: Lint Ruby Code
+        run: bundle exec rubocop --parallel
+
+  security_scanners:
+    name: Security Scanners
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup Ruby and Gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.0
+          bundler-cache: true
+      - name: Run Security Checks
+        run: |
+          bundle exec bundler-audit --update
+#          TODO Disable until ruby_parser supports Ruby 3.1
+#          bundle exec brakeman -q -w2
+
+  tests:
+    name: Tests
+    runs-on: ubuntu-20.04
+    services:
+      db:
+        image: postgres:13
+        ports: [ '5432:5432' ]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: on_the_rails_test
+      redis:
+        image: redis
+        ports: [ '6379:6379' ]
+        options: --entrypoint redis-server
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.0
+          bundler-cache: true
+      - name: Setup Test Database
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/on_the_rails_test
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          PGHOST: localhost
+          PGUSER: postgres
+        run: |
+          bundle exec rails db:schema:load
+      - name: Build Test Assets
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/on_the_rails_test
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          PGHOST: localhost
+          PGUSER: postgres
+        timeout-minutes: 10
+        run: |
+          bundle exec rails assets:precompile
+      - name: Run Tests
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/on_the_rails_test
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          CI: true # Used in code for configuration when in test environment
+        timeout-minutes: 20
+        run: |
+          bundle exec rails test:all
