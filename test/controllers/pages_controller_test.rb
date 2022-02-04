@@ -7,5 +7,8 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
 
     get roadmap_url
     assert_response :success
+
+    get attributions_url
+    assert_response :success
   end
 end
