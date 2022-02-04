@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   get '/about', to: 'pages#show', id: 'about', as: :about
   #noinspection RailsParamDefResolve
   get '/roadmap', to: 'pages#show', id: 'roadmap', as: :roadmap
+  #noinspection RailsParamDefResolve
+  get '/attributions', to: 'pages#show', id: 'attributions', as: :attributions
 end
