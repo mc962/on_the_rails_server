@@ -59,7 +59,7 @@ group :development, :test do
   # NOTE: There is a bug with running a Foreman configuration and this application's configuration that causes an error
   #   loop in a JetBrains IDE. Since in that case we'd be using the JetBrains Debugger anyway, we do not need to load
   #   this library if we are running with a JetBrains IDE.
-  gem "debug", platforms: %i[ mri mingw x64_mingw ] unless !!(ENV['RUBYLIB'] =~ /ruby-debug-ide/)
+  gem "debug", platforms: %i[ mri mingw x64_mingw ] unless ENV['RM_INFO']
 
   # Generate fake seed data
   gem 'factory_bot_rails'
@@ -95,4 +95,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+
+  # Improve Minitest output
+  # NOTE: Currently RubyMine does not appear to support minitest-reporters
+  gem 'minitest-reporters'
 end

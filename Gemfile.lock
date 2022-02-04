@@ -71,6 +71,7 @@ GEM
     annotate (2.6.5)
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
+    ansi (1.5.0)
     ast (2.4.2)
     bindex (0.8.1)
     bootsnap (1.10.3)
@@ -142,6 +143,11 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     minitest (5.15.0)
+    minitest-reporters (1.5.0)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     msgpack (1.4.4)
     net-imap (0.2.3)
       digest
@@ -279,6 +285,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kaminari
+  minitest-reporters
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.1)
