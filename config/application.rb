@@ -18,5 +18,22 @@ module OnTheRails
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Map ActionPolicy Forbidden errors to Rails error handling
+    config.action_dispatch.rescue_responses.merge!(
+      {
+        'ActionPolicy::Unauthorized' => :forbidden
+      }
+    )
+    # Allow custom error pages
+    config.exceptions_app = self.routes
+
+    # Do not destroy existing attachments on new attachment upload
+    config.active_storage.replace_on_assign_to_many = false
+
+    # S3 Bucket for site assets and uploaded files
+    config.x.application_bucket = 'on-the-rails'
+    # Path prefix for S3 resources item files (such as images) (defaults to dev path)
+    config.x.resource_prefix = 'resources/dev'
   end
 end
