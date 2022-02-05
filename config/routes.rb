@@ -5,6 +5,11 @@ Rails.application.routes.draw do
 
   resources :posts
 
+  namespace :api do
+    resources :posts, except: [:new, :edit]
+  end
+
+
   # Static Pages
   # NOTE: Each route is mapped manually to pages#show. The specific page/view to render is handled by adding an id param
   #   to the route, which the controller then resolves to the appropriate view.

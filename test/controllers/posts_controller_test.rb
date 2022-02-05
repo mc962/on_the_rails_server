@@ -1,8 +1,10 @@
 require "test_helper"
 
-class PostsControllerTest < ActionDispatch::IntegrationTest
+class PostsControllerTest < ApplicationControllerTestCase
   setup do
-    @post = posts(:one)
+    @post = FactoryBot.create(:post_with_user)
+    @user = @post.author
+    sign_in @user
   end
 
   test "should get index" do
@@ -17,7 +19,8 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create post" do
     assert_difference("Post.count") do
-      post posts_url, params: { post: { content: @post.content, modified_at: @post.modified_at, published: @post.published, published_at: @post.published_at, title: @post.title } }
+      post_attributes = FactoryBot.build(:post).attributes
+      post posts_url, params: { post: post_attributes }
     end
 
     assert_redirected_to post_url(Post.last)
