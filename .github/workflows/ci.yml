@@ -20,7 +20,7 @@ jobs:
       - name: Setup Ruby and Gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1.0
+          ruby-version: 3.1.2
           bundler-cache: true
       - name: Lint Ruby Code
         run: bundle exec rubocop --parallel
@@ -34,13 +34,12 @@ jobs:
       - name: Setup Ruby and Gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1.0
+          ruby-version: 3.1.2
           bundler-cache: true
       - name: Run Security Checks
         run: |
           bundle exec bundler-audit --update
-#          TODO Disable until ruby_parser supports Ruby 3.1
-#          bundle exec brakeman -q -w2
+          bundle exec brakeman -q -w2
 
   tests:
     name: Tests
@@ -69,7 +68,7 @@ jobs:
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1.0
+          ruby-version: 3.1.2
           bundler-cache: true
       - name: Setup Test Database
         env:
