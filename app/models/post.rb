@@ -22,7 +22,10 @@
 
 # Represents a blog post that may be written by an author
 class Post < ApplicationRecord
+  extend FriendlyId
+
   belongs_to :author, class_name: 'User', foreign_key: :user_id
+  has_rich_text :content
 
   validates :title, :published, :content, :author, presence: true
 
@@ -30,6 +33,8 @@ class Post < ApplicationRecord
   before_save :set_published_at, if: :will_save_change_to_published?
   # Always set modified_at before Post is saved, but only bother if Post has been published
   before_save :set_modified_at, if: :published?
+
+  friendly_id :title, use: %i[slugged history]
 
   private
 
