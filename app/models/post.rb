@@ -24,7 +24,7 @@
 class Post < ApplicationRecord
   belongs_to :author, class_name: 'User', foreign_key: :user_id
 
-  validates :title, :content, :published, :author, presence: true
+  validates :title, :published, :content, :author, presence: true
 
   # Only bother to change published_at if `published` field will change
   before_save :set_published_at, if: :will_save_change_to_published?
