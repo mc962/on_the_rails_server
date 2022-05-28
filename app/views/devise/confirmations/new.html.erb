@@ -1,6 +1,6 @@
 <h2 class="text-center">Resend confirmation instructions</h2>
 
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { class: 'auth-form', data: {turbo: false}, method: :post }) do |f| %>
+<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { class: 'standard-form', data: {turbo: false}, method: :post }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field my-4">
