@@ -3,12 +3,20 @@
 <h1>Posts</h1>
 
 <div id="posts">
-  <% @posts.each do |post| %>
-    <%= render post %>
-    <p>
-      <%= link_to "Show this post", post %>
-    </p>
-  <% end %>
+  <%= page_entries_info @posts %>
+
+  <ul class="list-group directory-list">
+    <% @posts.each do |post| %>
+      <li class="list-group-item directory-item">
+        <%= render post %>
+        <p>
+          <%= link_to "Show this post", post %>
+        </p>
+      </li>
+    <% end %>
+  </ul>
+
+  <%= paginate @posts %>
 </div>
 
 <%= link_to "New post", new_post_path %>

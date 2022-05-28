@@ -34,7 +34,7 @@ class Post < ApplicationRecord
   # Always set modified_at before Post is saved, but only bother if Post has been published
   before_save :set_modified_at, if: :published?
 
-  friendly_id :title, use: %i[slugged history]
+  friendly_id :title, use: %i[slugged finders history]
 
   private
 
