@@ -2,56 +2,43 @@
 
 class API::PostsController < API::ApplicationController
   def index
-    @posts = Post.all
+    @posts = Post.published.order(:title).page(params[:page])
 
-    render json: @posts
+    render json: {
+      data: @posts.map do |post|
+        {
+          title: post.title,
+          published_at: post.published_at,
+          modified_at: post.modified_at,
+          _link: api_post_url(post)
+        }
+      end,
+      navigation: {
+        prev: (api_posts_url(page: @posts.prev_page) if @posts.prev_page),
+        current: api_posts_url(page: @posts.current_page),
+        next: (api_posts_url(page: @posts.next_page) if @posts.next_page),
+      },
+      pagination: {
+        current: @posts.current_page,
+        previous: @posts.prev_page,
+        next: @posts.next_page,
+        per_page: @posts.limit_value,
+        pages: @posts.total_pages,
+        count: @posts.total_count
+      }
+    }
   end
 
   def show
     @post = Post.find(params[:id])
 
-    render json: @post
-  end
-
-  def create
-    @post = Post.new(post_params)
-    @post.author = current_user
-
-    if @post.save
-      render json: @post, status: :created, location: @post
-    else
-      render json: @post.errors, status: :unprocessable_entity
-    end
-  end
-
-  def update
-    @post = Post.find(params[:id])
-
-    if @post.update(post_params)
-      render json: @post, status: :ok, location: @post
-    else
-      render json: @post.errors, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    @post = Post.find(params[:id])
-
-    @post.destroy
-
-    head :no_content
-  end
-
-  private
-
-  # Only allow a list of trusted parameters through.
-  def post_params
-    params.require(:post).permit(
-      :title,
-      :content,
-      :published_at,
-      :modified_at,
-      :published
-    )
+    render json: {
+      data: {
+        **@post.attributes
+      },
+      navigation: {
+        posts: api_posts_url
+      }
+    }
   end
 end

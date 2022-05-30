@@ -36,6 +36,8 @@ class Post < ApplicationRecord
 
   friendly_id :title, use: %i[slugged finders history]
 
+  scope :published, -> { where(published: true) }
+
   private
 
   # Set published_at timestamp to current DateTime (UTC) only when the Post is published for the first time,

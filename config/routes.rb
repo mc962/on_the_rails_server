@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :posts
 
   namespace :api do
-    resources :posts, except: [:new, :edit]
+    resources :posts, only: [:index, :show]
   end
 
 
