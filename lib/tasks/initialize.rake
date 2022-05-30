@@ -1,5 +1,6 @@
 desc 'Sets up an admin user directly in the database, to be used when initially setting up a database with no existing admin users'
 namespace :db do
+  # rake "db:setup_admin[test@example.com,password]"
   task :setup_admin, [:email, :password] => :environment do |_t, args|
     admin_user = User.create!(
       email: args.fetch(:email),
