@@ -20,7 +20,7 @@ class PostsControllerTest < ApplicationControllerTestCase
   test "should create post" do
     assert_difference("Post.count") do
       post_attributes = FactoryBot.build(:post).attributes
-      post posts_url, params: { post: post_attributes }
+      post posts_url, params: { post: { **post_attributes, content: Faker::Lorem.paragraphs(number: 3).join('\\n') } }
     end
 
     assert_redirected_to post_url(Post.last)

@@ -16,7 +16,7 @@ class API::PostsController < API::ApplicationController
       navigation: {
         prev: (api_posts_url(page: @posts.prev_page) if @posts.prev_page),
         current: api_posts_url(page: @posts.current_page),
-        next: (api_posts_url(page: @posts.next_page) if @posts.next_page),
+        next: (api_posts_url(page: @posts.next_page) if @posts.next_page)
       },
       pagination: {
         current: @posts.current_page,
