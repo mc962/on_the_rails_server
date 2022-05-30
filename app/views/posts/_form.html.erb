@@ -1,0 +1,41 @@
+<%= form_with(model: post, html: {class: 'standard-form'}) do |form| %>
+  <% if post.errors.any? %>
+    <div class="my-4">
+      <h6 class="text-danger"><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h6>
+      <ul>
+        <% post.errors.each do |error| %>
+          <li class="text-danger"><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field my-4">
+    <%= form.label :title, class: 'form-label' %>
+    <%= form.text_field :title, class: 'form-control' %>
+  </div>
+
+  <div class="field my-4">
+    <%= form.label :content, class: 'form-label' %>
+    <%= form.rich_text_area :content, class: 'form-control overflow-auto' %>
+  </div>
+
+<!--  <div>-->
+    <%#= form.label :published_at, class: 'form-label' %>
+    <%#= form.date_field :published_at %>
+<!--  </div>-->
+
+<!--  <div>-->
+    <%#= form.label :modified_at, class: 'form-label' %>
+    <%#= form.date_field :modified_at %>
+<!--  </div>-->
+
+  <div class="field my-4">
+    <%= form.label :published, class: 'form-label' %>
+    <%= form.check_box :published, class: 'form-control-checkbox' %>
+  </div>
+
+  <div class="my-4">
+    <%= form.submit 'Save Post', class: 'btn btn-primary' %>
+  </div>
+<% end %>

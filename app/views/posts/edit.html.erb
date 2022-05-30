@@ -1,0 +1,16 @@
+<h1 class="text-center">Editing post</h1>
+
+<%= render "form", post: @post %>
+
+<br>
+
+<section class="p-4 d-flex flex-direction-row justify-content-center">
+  <ul class="post-action-links list-group list-group-horizontal">
+    <li class="post-action-link list-group-item">
+      <%= link_to "Show this post", @post, class: 'lh-lg' %>
+    </li>
+    <li class="post-action-link list-group-item">
+      <%= link_to "Back to posts", posts_path, class: 'lh-lg' %>
+    </li>
+  </ul>
+</section>
