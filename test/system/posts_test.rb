@@ -2,9 +2,16 @@ require 'test_helper'
 
 class PostsTest < ApplicationSystemTestCase
   setup do
+    admin_user = User.create!(
+      email: 'test@example.com',
+      password: 'password',
+      confirmed_at: DateTime.now,
+      approved: true
+    )
+
+    admin_user.add_role(:admin)
+
     @post = FactoryBot.create(:post_with_user)
-    # @user = @post.author
-    # sign_in @user
   end
 
   test "visiting the index" do
