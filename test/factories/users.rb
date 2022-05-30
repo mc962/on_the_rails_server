@@ -31,5 +31,17 @@ FactoryBot.define do
     password { 'password' }
     # Default users to be confirmed so that tests may be performed using them
     confirmed_at { DateTime.now }
+
+    factory :user_with_posts do
+      transient do
+        posts_count { 5 }
+      end
+
+      after(:create) do |user, evaluator|
+        FactoryBot.create_list(:post, evaluator.posts_count, author: user)
+
+        user.reload
+      end
+    end
   end
 end

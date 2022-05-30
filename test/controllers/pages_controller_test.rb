@@ -1,6 +1,6 @@
 require "test_helper"
 
-class PagesControllerTest < ActionDispatch::IntegrationTest
+class PagesControllerTest < ApplicationControllerTestCase
   test "should get static pages" do
     get about_url
     assert_response :success

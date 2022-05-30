@@ -3,6 +3,13 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  resources :posts
+
+  namespace :api do
+    resources :posts, only: [:index, :show]
+  end
+
+
   # Static Pages
   # NOTE: Each route is mapped manually to pages#show. The specific page/view to render is handled by adding an id param
   #   to the route, which the controller then resolves to the appropriate view.

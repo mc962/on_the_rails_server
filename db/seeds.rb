@@ -8,6 +8,6 @@
 
 unless Rails.env.production?
   ActiveRecord::Base.transaction do
-    _user = FactoryBot.create(:user)
+    _user = FactoryBot.create_list(:user_with_posts, 15)
   end
 end

@@ -34,8 +34,8 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 
 class ApplicationControllerTestCase < ActionDispatch::IntegrationTest
-  # include Devise::Test::IntegrationHelpers
-  # include Warden::Test::Helpers
+  include Devise::Test::IntegrationHelpers
+  include Warden::Test::Helpers
   include Capybara::DSL
   include Capybara::Minitest::Assertions
 end
