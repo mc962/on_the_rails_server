@@ -1,9 +1,16 @@
 require "active_support/core_ext/integer/time"
 
-ON_THE_RAILS_HOST = ''
+ALLOWED_HOSTS = {
+
+}
+
+SITE_HOST = ""
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+
+  # Whitelist local domains
+  config.hosts.push(*ALLOWED_HOSTS.values)
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -65,7 +72,13 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :redis_cache_store, {
+    username: Rails.application.credentials.dig(:redis, :username),
+    password: Rails.application.credentials.dig(:redis, :password),
+    host: Rails.application.credentials.dig(:redis, :host),
+    port: 6379,
+    namespace: 'on_the_rails'
+  }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
