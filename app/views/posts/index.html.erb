@@ -1,14 +1,16 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Posts</h1>
+<h1 class="text-center">Posts</h1>
 
 <div id="posts">
-  <%= page_entries_info @posts %>
+  <div class="pagination-info mx-auto">
+    <%= page_entries_info @posts %>
+  </div>
 
-  <ul class="list-group directory-list">
+  <ul class="list-group directory-list mx-auto my-3">
     <% @posts.each do |post| %>
       <li class="list-group-item directory-item">
-        <%= render post %>
+        <h6 class="directory-title"><%= post.title %></h6>
         <p>
           <%= link_to "Show this post", post %>
         </p>
