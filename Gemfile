@@ -42,7 +42,10 @@ gem 'argon2', '>= 2'
 # gem "bcrypt", "~> 3.1.7"
 
 # Authorization framework
-# gem "action_policy"
+gem "action_policy"
+
+# Authorization roles
+gem "rolify"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
