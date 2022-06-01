@@ -1,10 +1,11 @@
 require "active_support/core_ext/integer/time"
 
 ALLOWED_HOSTS = {
-
+  on_the_rails: '.on-the-rails.dev',
+  heroku: '.on-the-rails.herokuapp.com',
 }
 
-SITE_HOST = ""
+SITE_HOST = "https://www.#{ALLOWED_HOSTS[:on_the_rails]}"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -73,10 +74,7 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   config.cache_store = :redis_cache_store, {
-    username: Rails.application.credentials.dig(:redis, :username),
-    password: Rails.application.credentials.dig(:redis, :password),
-    host: Rails.application.credentials.dig(:redis, :host),
-    port: 6379,
+    url: ENV['REDIS_URL'],
     namespace: 'on_the_rails'
   }
 
@@ -92,9 +90,9 @@ Rails.application.configure do
 
   # Settings for SMTP server to deliver email to (such as SendGrid)
   config.action_mailer.smtp_settings = {
-    user_name: 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
-    password: Rails.application.credentials.sendgrid[:api_key],
-    domain: ON_THE_RAILS_HOST,
+    user_name: ENV['SENDGRID_USERNAME'],
+    password: ENV['SENDGRID_PASSWORD'],
+    domain: SITE_HOST,
     address: 'smtp.sendgrid.net',
     port: 587,
     authentication: :plain,
@@ -102,7 +100,7 @@ Rails.application.configure do
   }
 
   # Default URL options for used by Action Mailer for construction urls for emails
-  config.action_mailer.default_url_options = { host: ON_THE_RAILS_HOST }
+  config.action_mailer.default_url_options = { host: SITE_HOST }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
